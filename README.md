@@ -4,17 +4,59 @@ The aim of this document is to highlight what we believe are good practices for 
 
 ## Caching
 
-- Require Versioning in the Accepts Header
-
 ###ETag:
 
-When generating a request, include a HTTP header ETag containing a hash or checksum of the representation. This value should change whenever the output representation changes. Now, if an inbound HTTP requests contains a If-None-Match header with a matching ETag value, the API should return a 304 Not Modified status code instead of the output representation of the resource.
+Include an ETag header in all responses, identifying the specific version of the returned resource.
 
-Include an ETag header in all responses, identifying the specific version of the returned resource. This allows users to cache resources and use requests with this value in the If-None-Match header to determine if the cache should be updated.
+Once the client receives the response and sees the ETag value, it should save the ETag and the response in the local store and issue subsequent requests to the same data with the If-None-Match header that points to the value of the ETag saved:
+
+```
+Get /countries HTTP/1.1
+Host: api.example.org
+Content-Type: application/vnd.uber+json
+If-None-Match: "88d979a0a78942b5bda05ace4214556a"
+```
+
+If the data-set hasn’t modified on the server, the server must respond with HTTP 304 and an empty body:
+
+```
+HTTP/1.1 304 Not Modified
+Content-Type: application/vnd.uber+json
+Expires: Sat, 01 Jan 1970 00:00:00 GMT
+Pragma: no-cache
+Content-Length: 0
+```
+
+If the data-set has modified on the server, the server must respond with a full HTTP 200 response and the new value of ETag.
 
 ###Last-Modified:
 
-This basically works like to ETag, except that it uses timestamps. The response header Last-Modified contains a timestamp in RFC 1123 format which is validated against If-Modified-Since. Note that the HTTP spec has had 3 different acceptable date formats and the server should be prepared to accept any one of them.
+In this workflow, for each response, the server provides a “Last-Modified” header in the response, containing the last date the specific data was modified:
+
+```
+HTTP/1.1 200 OK
+Last-Modified: Mon, 7 Dec 2015 15:29:14 GMT
+Content-Length: 23456
+Content-Type: application/vnd.uber+json; charset=UTF-8
+… the rest of the response …
+```
+
+Once the client receives the response and sees the Last-Modified header, it should save the value of the Last-Modified date-time and the corresponding response in the local store (cache). The client should issue subsequent requests to the same data with the If-Modified-Since header that points to the value of the date-time saved:
+
+```
+Get /countries HTTP/1.1
+Host: api.example.org
+Content-Type: application/vnd.uber+json
+If-Modified-Since: Mon, 7 Dec 2015 15:29:14 GMT
+```
+
+If the data-set hasn’t modified on the server since the date-time indicated, the server must respond with HTTP 304 and an empty body:
+
+HTTP/1.1 304 Not Modified
+Content-Type: application/vnd.uber+json
+Content-Length: 0
+
+If the data-set has modified on the server, the server must respond with a full HTTP 200 response and the new value of the “Last-Modified” header.
 
 ## Rate limiting
 To prevent abuse, it is now standard practice to add some sort of rate limiting to an API. HTTP status code `429 Too Many Requests` will be returned if you exceed the prescribed rate limit.
