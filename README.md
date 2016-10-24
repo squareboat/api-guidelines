@@ -125,31 +125,22 @@ Avoid v1.1 etc.
 
 ## Response Codes:
 
-200 – OK – Everything is working as expected.
-
-201 Created - Response to a POST that results in a creation. Should be combined with a Location header pointing to the location of the new resource
-
-204 No Content - Response to a successful request that won't be returning a body (like a DELETE request)
-
-304 – Not Modified – The client can use cached data
-
-400 – Bad Request – The request was invalid or cannot be served. The exact error will be explained in the error payload. This occurs often due to missing a required parameter.
-
-401 – Unauthorized – The request requires an user authentication
-
-403 – Forbidden – The server understood the request, but is refusing it or the access is not allowed / When authentication succeeded but authenticated user doesn't have access to the resource
-
-404 – Not found – There is no resource behind the URI.
-
-405 - Method Not Allowed - When an HTTP method is being requested that isn't allowed for the authenticated user
-
-410 - Gone - Indicates that the resource at this end point is no longer available. Useful as a blanket response for old API versions.
-
-422 – Unprocessable Entity – Used for validation errors. Should be used if the server cannot process the enitity, e.g. if an image cannot be formatted or mandatory fields are missing in the payload.
-
-429 - Too Many Requests - When a request is rejected due to rate limiting
-
-500 – Internal Server Error – API developers should avoid this error. If an error occurs in the global catch blog, the stracktrace should be logged and not returned as response.
+| Code    | Alias                   | Description |
+| ------- | :----------------------:| ----------- |
+| **200** | *OK*                    | Everything is working as expected.     |
+| **201** | *Created*               | Response to a POST that results in a creation. Should be combined with a Location header pointing to the location of the new resource  |
+| **204** | *No Content*            | Response to a successful request that won't be returning a body (like a DELETE request) |
+| **304** | *Not Modified*          | The client can use cached data |
+| **400** | *Bad Request*           | The request was invalid or cannot be served. The exact error will be explained in the error payload. This occurs often due to missing a required parameter. |
+| **401** | *Unauthorized*          | The request requires an user authentication. |
+| **403** | *Forbidden*             | The server understood the request, but is refusing it or the access is not allowed / When authentication succeeded but authenticated user doesn't have access to the resource. |
+| **404** | *Not Found*             | There is no resource behind the URI. |
+| **405** | Method not Allowed      | When an HTTP method is being requested that isn't allowed for the authenticated user. |
+| **408** | *Request Timed Out*     | The server timed out while waiting for the request. |
+| **410** | *Gone*                  |  Indicates that the resource at this end point is no longer available. Useful as a blanket response for old API versions. |
+| **422** | *Unprocessable Entity*  | Used for validation errors. Should be used if the server cannot process the enitity, e.g. if an image cannot be formatted or mandatory fields are missing in the payload. |
+| **429** | *Too Many Requests*     | Too Many Requests - When a request is rejected due to rate limiting. |
+| **500** | *Internal Server Error* | API developers should avoid this error. If an error occurs in the global catch blog, the stracktrace should be logged and not returned as response.|
 
 ## Error Responses:
 
@@ -309,4 +300,3 @@ https://www.twilio.com/docs/api/rest
 ### Credits / References
 
 http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
-
