@@ -69,7 +69,7 @@ It's time to leave XML behind in APIs. It's verbose, it's hard to parse, it's ha
 ## SSL always
 One thing to watch out for is non-SSL access to API URLs. We do not redirect these to their SSL counterparts and throw a hard error instead! The last thing you want is for poorly configured clients to send requests to an unencrypted endpoint, just to be silently redirected to the actual encrypted endpoint.
 
-## Headers:
+## Enable CORS
 We enable Cross-Origin Resource Sharing (CORS) by default.
 
 ## Keep JSON minified in all responses
@@ -88,14 +88,17 @@ PATCH /tickets/12 - Partially updates ticket #12
 DELETE /tickets/12 - Deletes ticket #12
 ```
 
-Use nouns but no verbs. Keep it simple and use only plural nouns for all resources.
+Use nouns but no verbs.
+Keep it simple and use only plural nouns for all resources.
+
+Good:
 
 ```
 /cars - Returns a list of cars
 /cars/71 - Returns a specific car
 ```
 
-Do not use verbs:
+Bad:
 
 ```
 /getAllCars
@@ -106,11 +109,11 @@ Do not use verbs:
 If a resource is related to another resource, use subresources whenever possible.
 
 ```
-GET /cars/711/drivers/ Returns a list of drivers for car 711
-GET /cars/711/drivers/4 Returns driver #4 for car 711
+GET /cars/711/drivers/ (Returns a list of drivers for car 711)
+GET /cars/711/drivers/4 (Returns driver #4 for car 711)
 ```
 
-## JSON Data vs Form Data:
+## JSON Data vs Form Data
 
 We use JSON over form data because complicated nested forms are represented more easily in JSON than form data.
 
@@ -121,13 +124,13 @@ GET /cars?color=red&sort=desc
 GET /cars?fields=manufacturer,model,id,color
 ```
 
-## Versioning:
+## Versioning
 
 Our preferred URL structure would be `/blog/api/v1`
 
 Avoid v1.1 etc.
 
-## Response Codes:
+## Response Codes
 
 | Code    | Alias                   | Description |
 | ------- | :----------------------:| ----------- |
@@ -146,7 +149,7 @@ Avoid v1.1 etc.
 | **429** | *Too Many Requests*     | Too Many Requests - When a request is rejected due to rate limiting. |
 | **500** | *Internal Server Error* | API developers should avoid this error. If an error occurs in the global catch blog, the stracktrace should be logged and not returned as response.|
 
-## Error Responses:
+## Error Responses
 
 Some folks will try to use HTTP status codes exclusively and skip using error codes because they do not like the idea of making their own error codes or having to document them, but this is not a scalable approach.
 
@@ -158,7 +161,9 @@ There will be some situations where the same endpoint could easily return the sa
   "message" : "Something bad happened :(",
   "description" : "More details about the error here"
 }
+```
 
+```
 {
   "code" : 1024,
   "message" : "Validation Failed",
@@ -179,7 +184,7 @@ There will be some situations where the same endpoint could easily return the sa
 
 - No internal names will be exposed in the API (for example, “node” and “taxonomy term”)
 
-## Pagination:
+## Pagination
 
 We will allow the client to request the number of items it would like returned per HTTP request.
 
@@ -219,7 +224,9 @@ If no limit is specified, return results with a default limit.
 }
 ```
 
-We would Nest foreign key relations like this (Correct way):
+For nesting foreign key relations:
+
+Correct way:
 
 ```
 {
@@ -231,7 +238,7 @@ We would Nest foreign key relations like this (Correct way):
 }
 ```
 
-Instead of this (Wrong way):
+Wrong way:
 
 ```
 {
@@ -241,7 +248,8 @@ Instead of this (Wrong way):
 }
 ```
 
-- A PUT, POST or PATCH call may make modifications to fields of the underlying resource that weren't part of the provided parameters (for example: created_at or updated_at timestamps). To prevent an API consumer from having to hit the API again for an updated representation, have the API return the updated (or created) representation as part of the response.
+- A PUT, POST or PATCH call may make modifications to fields of the underlying resource that weren't part of the provided parameters (for example: created_at or updated_at timestamps).
+- To prevent an API consumer from having to hit the API again for an updated representation, have the API return the updated (or created) representation as part of the response.
 
 ## Naming Conventions
 
@@ -253,7 +261,7 @@ Since we are using JSON as your primary representation format, the "right" thing
 It can be hard to pick between subresource URLs or embedded data. Embedded data can be rather difficult to pull off
 
 ```
-GET /tickets/12?embed=customer.name,assigned_user
+GET /tickets/12?embed=customer.name,assigned_agent
 ```
 
 ```
@@ -264,7 +272,7 @@ GET /tickets/12?embed=customer.name,assigned_user
   "customer" : {
     "name" : "Bob"
   },
-  assigned_user: {
+  assigned_agent: {
    "id" : 42,
    "name" : "Jim",
   }
@@ -286,9 +294,10 @@ Gzip will be enabled by default in production on all API responses.
 
 - Never directly expose db fields because if you add new fields later, the api structure will also change.
 
-## Documentation Tools (TODO)
+## Documentation
 
 ```
+https://www.getpostman.com/
 http://apidocjs.com/
 http://swagger.io/
 http://raml.org/index.html
@@ -309,3 +318,7 @@ https://www.twilio.com/docs/api/rest
 ### Credits / References
 
 http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
+
+---
+#### SquareBoat builds awesome mobile and web applications for startups. We are based out of Gurgaon, India.
+---
