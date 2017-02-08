@@ -50,13 +50,15 @@ Content-Type: application/vnd.uber+json
 If-Modified-Since: Mon, 7 Dec 2015 15:29:14 GMT
 ```
 
-If the data-set hasn’t modified on the server since the date-time indicated, the server must respond with HTTP 304 and an empty body:
+If the data-set hasn’t modified on the server since the date-time indicated, the server must respond with **HTTP 304** and an empty body:
 
+```
 HTTP/1.1 304 Not Modified
 Content-Type: application/vnd.uber+json
 Content-Length: 0
+```
 
-If the data-set has modified on the server, the server must respond with a full HTTP 200 response and the new value of the “Last-Modified” header.
+If the data-set has modified on the server, the server must respond with a full **HTTP 200 response** and the new value of the “Last-Modified” header.
 
 ## Rate limiting
 To prevent abuse, it is now standard practice to add some sort of rate limiting to an API. HTTP status code `429 Too Many Requests` will be returned if you exceed the prescribed rate limit.
@@ -114,8 +116,10 @@ We use JSON over form data because complicated nested forms are represented more
 
 ## Filtering
 
+```
 GET /cars?color=red&sort=desc
 GET /cars?fields=manufacturer,model,id,color
+```
 
 ## Versioning:
 
@@ -202,14 +206,16 @@ If no limit is specified, return results with a default limit.
 
 ```
 {
-  "data": [{
-	"name": "Hulk Hogan",
-	"id": "100002"
-  },
-  {
-    "name": "Mick Foley",
-    "id": "100003"
-  }
+  "data": [
+    {
+	    "name": "Hulk Hogan",
+	    "id": "100002"
+    },
+    {
+      "name": "Mick Foley",
+      "id": "100003"
+    }
+  ]
 }
 ```
 
@@ -246,7 +252,10 @@ Since we are using JSON as your primary representation format, the "right" thing
 
 It can be hard to pick between subresource URLs or embedded data. Embedded data can be rather difficult to pull off
 
+```
 GET /tickets/12?embed=customer.name,assigned_user
+```
+
 ```
 {
   "id" : 12,
