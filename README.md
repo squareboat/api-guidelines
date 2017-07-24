@@ -4,7 +4,7 @@ The aim of this document is to highlight what we believe are good practices for 
 
 ## Caching
 
-###ETag:
+### ETag:
 
 Include an ETag header in all responses, identifying the specific version of the returned resource.
 
@@ -29,7 +29,7 @@ Content-Length: 0
 
 If the data-set has modified on the server, the server must respond with a full HTTP 200 response and the new value of ETag.
 
-###Last-Modified:
+### Last-Modified:
 
 In this workflow, for each response, the server provides a “Last-Modified” header in the response, containing the last date the specific data was modified:
 
@@ -126,7 +126,7 @@ GET /cars?fields=manufacturer,model,id,color
 
 ## Versioning
 
-Our preferred URL structure would be `/blog/api/v1`
+Our preferred URL structure would be `/blog/api/v1`.
 
 Avoid v1.1 etc.
 
@@ -253,7 +253,7 @@ Wrong way:
 
 ## Naming Conventions
 
-Since we are using JSON as your primary representation format, the "right" thing to do is to follow JavaScript naming conventions - and that means camelCase for field names
+Since we are using JSON as your primary representation format, the "right" thing to do is to follow JavaScript naming conventions - and that means camelCase for field names.
 
 
 ## Embedding related resources
@@ -281,8 +281,8 @@ GET /tickets/12?embed=customer.name,assigned_agent
 
 ## No auto increment ID’s
 
-- We do not want people to know how many resources we have
-- We do not want developers to automate a scraping script by going to /resource/1, /resource/2 etc. and scraping everything away
+- We do not want people to know how many resources we have.
+- We do not want developers to automate a scraping script by going to /resource/1, /resource/2 etc. and scraping everything away.
 
 ## Enable GZip
 
@@ -291,29 +291,29 @@ Gzip will be enabled by default in production on all API responses.
 ## Transforming API output
 
 - You want true or false as an actual JSON boolean, not a numeric string or a char(1).
-
 - Never directly expose db fields because if you add new fields later, the api structure will also change.
 
 ## Documentation
 
-```
-https://www.getpostman.com/
-http://apidocjs.com/
-http://swagger.io/
-http://raml.org/index.html
-https://github.com/lord/slate
-https://github.com/Thibaut/devdocs
-http://www.programmableweb.com/news/web-api-documentation-best-practices/2010/08/12
-http://bradfults.com/the-best-api-documentation/
-```
+
+Some good tools and articles:
+
+- [Postman](https://www.getpostman.com/)
+- [API docs](http://apidocjs.com/)
+- [Swagger](http://swagger.io/)
+- [RAML](http://raml.org/index.html)
+- [Slate - API docs generator](https://github.com/lord/slate)
+- [Dev Docs](https://github.com/Thibaut/devdocs)
+- [ProgrammableWeb  - Web API Documentation Best Practices](http://www.programmableweb.com/news/web-api-documentation-best-practices/2010/08/12)
+- [The Best API Documentation](http://bradfults.com/the-best-api-documentation/)
+
 
 Some good examples of API documentation:
 
-```
-https://dev.twitter.com/overview/documentation
-https://stripe.com/docs/api#charges
-https://www.twilio.com/docs/api/rest
-```
+- [Twitter Docs](https://dev.twitter.com/overview/documentation)
+- [Stripe Docs](https://stripe.com/docs/api#charges)
+- [Twilio Docs](https://www.twilio.com/docs/api/rest)
+
 
 ### Credits / References
 
